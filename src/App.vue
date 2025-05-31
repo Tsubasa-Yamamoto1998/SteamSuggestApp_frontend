@@ -9,10 +9,20 @@
 </template>
 
 <script setup>
+// リセットCSSのインポート
 import 'normalize.css'
 
-import Header from './components/HeaderComp.vue'
-import Footer from './components/FooterComp.vue'
+import Header from '@/components/HeaderComp.vue'
+import Footer from '@/components/FooterComp.vue'
+
+import { onMounted } from 'vue'
+import { useAuthCookie } from '@/stores/auth'
+
+const authCookie = useAuthCookie()
+
+onMounted(() => {
+  authCookie.checkAuth() // アプリ起動時にログイン状態を確認
+})
 </script>
 
 <style scoped>

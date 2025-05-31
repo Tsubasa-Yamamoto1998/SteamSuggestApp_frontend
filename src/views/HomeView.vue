@@ -1,11 +1,9 @@
 <template>
   <div id="app">
-    <Header />
     <main>
       <h1>ホーム画面だよ</h1>
       <router-view />
     </main>
-    <Footer />
   </div>
 </template>
 

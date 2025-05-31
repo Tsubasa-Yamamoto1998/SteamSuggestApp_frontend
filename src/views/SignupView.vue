@@ -5,22 +5,26 @@
     <form @submit.prevent="submitForm">
       <div class="form-group">
         <label for="username">ユーザー名</label>
-        <input v-model="form.username" type="text" id="username" required />
+        <input v-model="username" type="text" id="username" />
+        <span v-if="usernameError">{{ usernameError }}</span>
       </div>
 
       <div class="form-group">
         <label for="email">メールアドレス</label>
-        <input v-model="form.email" type="email" id="email" required />
+        <input v-model="email" type="email" id="email" />
+        <span v-if="emailError">{{ emailError }}</span>
       </div>
 
       <div class="form-group">
         <label for="password">パスワード</label>
-        <input v-model="form.password" type="password" id="password" required minlength="6" />
+        <input v-model="password" type="password" id="password" />
+        <span v-if="passwordError">{{ passwordError }}</span>
       </div>
 
       <div class="form-group">
         <label for="confirmPassword">パスワード確認</label>
-        <input v-model="form.confirmPassword" type="password" id="confirmPassword" required />
+        <input v-model="confirmPassword" type="password" id="confirmPassword" />
+        <span v-if="confirmPasswordError">{{ confirmPasswordError }}</span>
       </div>
 
       <p v-if="error" class="error">{{ error }}</p>
@@ -30,35 +34,70 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
+import { ref } from 'vue'
+import { useField, useForm } from 'vee-validate'
+import * as yup from 'yup'
+import { useRouter } from 'vue-router'
+import apiClient from '@/plugins/axios' // 修正: axiosではなくapiClientをインポート
 
-const form = reactive({
-  username: '',
-  email: '',
-  password: '',
-  confirmPassword: ''
+// バリデーションスキーマを定義
+const schema = yup.object({
+  username: yup.string().required('ユーザー名を入力してください。'),
+  email: yup
+    .string()
+    .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, '正しいメールアドレスを入力してください。')
+    .required('メールアドレスを入力してください。'),
+  password: yup
+    .string()
+    .min(
+      6,
+      'パスワードは6文字以上にしてください。英大文字、小文字、数字、特殊文字を含めてください。',
+    )
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
+      'パスワードは英大文字、小文字、数字、特殊文字を含めてください。',
+    )
+    .required('パスワードを入力してください。'),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref('password')], 'パスワードが一致しません。')
+    .required('パスワード確認を入力してください。'),
 })
 
+// フォームのセットアップ
+const { handleSubmit } = useForm({
+  validationSchema: schema,
+})
+
+// 各フィールドのセットアップ
+const { value: username, errorMessage: usernameError } = useField('username')
+const { value: email, errorMessage: emailError } = useField('email')
+const { value: password, errorMessage: passwordError } = useField('password')
+const { value: confirmPassword, errorMessage: confirmPasswordError } = useField('confirmPassword')
+
 const error = ref('')
+const router = useRouter()
 
-const submitForm = () => {
-  error.value = ''
+// フォーム送信処理
+const submitForm = handleSubmit(async (values) => {
+  try {
+    const data = {
+      username: values.username,
+      email: values.email,
+      password: values.password,
+      password_confirmation: values.confirmPassword,
+      confirm_success_url: 'http://localhost:5173/confirm',
+    }
+    // 修正: axiosではなくapiClientを使用
+    await apiClient.post('/auth', data)
 
-  if (form.password !== form.confirmPassword) {
-    error.value = 'パスワードが一致しません。'
-    return
+    alert('メールアドレスに認証メールを送信しました！')
+    router.push('/')
+  } catch (err) {
+    error.value = err.response?.data?.errors?.full_messages?.[0] || '登録に失敗しました。'
+    console.log(err)
   }
-
-  if (form.password.length < 6) {
-    error.value = 'パスワードは6文字以上にしてください。'
-    return
-  }
-
-  // API連携の例（後でRailsと接続）
-  console.log('登録フォーム送信', form)
-
-  // ここでバックエンドと通信したり、画面遷移したりできます
-}
+})
 </script>
 
 <style scoped>
@@ -84,7 +123,8 @@ button {
   border-radius: 4px;
 }
 .error {
-  color: red;
-  margin-bottom: 10px;
+  color: red; /* エラーメッセージを赤色に設定 */
+  margin-top: 4px; /* メッセージと入力欄の間隔を調整 */
+  font-size: 12px; /* メッセージのフォントサイズを調整 */
 }
 </style>
