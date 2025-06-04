@@ -10,6 +10,18 @@
       <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
       <button type="submit">登録</button>
     </form>
+
+    <!-- SteamID確認方法のセクション -->
+    <div class="how-to-check">
+      <h3>SteamIDの確認方法</h3>
+      <p>以下の手順でSteamIDを確認できます。</p>
+      <div class="howto-images">
+        <img src="@/assets/steamID_howto1.png" alt="SteamID確認方法1" />
+        <p>手順1: 右上のユーザーアイコンよりSteamのアカウント詳細ページを開きます。</p>
+        <img src="@/assets/steamID_howto2.png" alt="SteamID確認方法2" />
+        <p>手順2: ”〇〇のアカウント”下部に表示される数字がSteamIDです。</p>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -17,6 +29,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import apiClient from '@/plugins/axios' // apiClientをインポート
+import { showMessage } from '@/utils/message' // showMessageをインポート
 
 const steamID = ref('')
 const errorMessage = ref('')
@@ -40,15 +53,17 @@ const registerSteamID = async () => {
 
     // 登録成功時の処理
     if (response.status === 200) {
-      alert('SteamIDが登録されました！')
+      showMessage('SteamIDが登録されました！', 'success') // 成功メッセージを表示
       router.push('/user') // ユーザービューにリダイレクト
     }
   } catch (error) {
     // エラーハンドリング
     if (error.response && error.response.status === 400) {
       errorMessage.value = '無効なSteamIDです。'
+      showMessage('無効なSteamIDです。', 'error') // エラーメッセージを表示
     } else {
       errorMessage.value = '登録中にエラーが発生しました。'
+      showMessage('登録中にエラーが発生しました。', 'error') // エラーメッセージを表示
     }
     console.error(error)
   }
@@ -102,5 +117,23 @@ button:hover {
   color: red;
   font-size: 14px;
   margin-bottom: 10px;
+}
+
+/* SteamID確認方法セクションのスタイル */
+.how-to-check {
+  margin-top: 30px;
+  padding: 15px;
+  border-top: 1px solid #ddd;
+}
+
+.howto-images {
+  margin-top: 15px;
+}
+
+.howto-images img {
+  max-width: 100%;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 </style>

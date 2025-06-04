@@ -6,25 +6,25 @@
       <div class="form-group">
         <label for="username">ユーザー名</label>
         <input v-model="username" type="text" id="username" />
-        <span v-if="usernameError">{{ usernameError }}</span>
+        <span v-if="usernameError" class="validation-error">{{ usernameError }}</span>
       </div>
 
       <div class="form-group">
         <label for="email">メールアドレス</label>
         <input v-model="email" type="email" id="email" />
-        <span v-if="emailError">{{ emailError }}</span>
+        <span v-if="emailError" class="validation-error">{{ emailError }}</span>
       </div>
 
       <div class="form-group">
         <label for="password">パスワード</label>
         <input v-model="password" type="password" id="password" />
-        <span v-if="passwordError">{{ passwordError }}</span>
+        <span v-if="passwordError" class="validation-error">{{ passwordError }}</span>
       </div>
 
       <div class="form-group">
         <label for="confirmPassword">パスワード確認</label>
         <input v-model="confirmPassword" type="password" id="confirmPassword" />
-        <span v-if="confirmPasswordError">{{ confirmPasswordError }}</span>
+        <span v-if="confirmPasswordError" class="validation-error">{{ confirmPasswordError }}</span>
       </div>
 
       <p v-if="error" class="error">{{ error }}</p>
@@ -38,7 +38,8 @@ import { ref } from 'vue'
 import { useField, useForm } from 'vee-validate'
 import * as yup from 'yup'
 import { useRouter } from 'vue-router'
-import apiClient from '@/plugins/axios' // 修正: axiosではなくapiClientをインポート
+import apiClient from '@/plugins/axios' // apiClientをインポート
+import { showMessage } from '@/utils/message' // showMessageをインポート
 
 // バリデーションスキーマを定義
 const schema = yup.object({
@@ -88,14 +89,17 @@ const submitForm = handleSubmit(async (values) => {
       password_confirmation: values.confirmPassword,
       confirm_success_url: 'http://localhost:5173/confirm',
     }
-    // 修正: axiosではなくapiClientを使用
+    // APIリクエストを送信
     await apiClient.post('/auth', data)
 
-    alert('メールアドレスに認証メールを送信しました！')
+    // 成功メッセージを表示
+    showMessage('メールアドレスに認証メールを送信しました！', 'success')
     router.push('/')
   } catch (err) {
+    // エラーメッセージを表示
+    showMessage('登録に失敗しました。', 'error')
     error.value = err.response?.data?.errors?.full_messages?.[0] || '登録に失敗しました。'
-    console.log(err)
+    console.error(err)
   }
 })
 </script>
@@ -126,5 +130,10 @@ button {
   color: red; /* エラーメッセージを赤色に設定 */
   margin-top: 4px; /* メッセージと入力欄の間隔を調整 */
   font-size: 12px; /* メッセージのフォントサイズを調整 */
+}
+.validation-error {
+  color: red; /* バリデーションエラーメッセージを赤色に設定 */
+  font-size: 12px; /* メッセージのフォントサイズを調整 */
+  margin-top: 4px; /* メッセージと入力欄の間隔を調整 */
 }
 </style>

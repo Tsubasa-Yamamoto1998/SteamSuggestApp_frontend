@@ -33,7 +33,8 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthCookie } from '@/stores/auth'
-import apiClient from '@/plugins/axios' // 修正: axiosではなくapiClientをインポート
+import { showMessage } from '@/utils/message' // showMessageをインポート
+import apiClient from '@/plugins/axios'
 
 const email = ref('')
 const password = ref('')
@@ -51,27 +52,20 @@ const handleLogin = async () => {
 
     // レスポンスが成功の場合
     if (response.status === 200) {
-      alert('ログイン成功！')
+      showMessage('ログインに成功しました！', 'success') // 成功メッセージを表示
 
-      // レスポンスデータを展開
-      const { steam_id: steamID } = response.data.data
-      const { 'access-token': accessToken, client, uid } = response.headers
+      // 認証状態を更新
+      await authCookie.checkAuth()
 
-      // クッキーに保存
-      document.cookie = `access-token=${accessToken}; path=/; Secure; HttpOnly; SameSite=Strict`
-      document.cookie = `client=${client}; path=/; Secure; HttpOnly; SameSite=Strict`
-      document.cookie = `uid=${uid}; path=/; Secure; HttpOnly; SameSite=Strict`
-
-      authCookie.checkAuth() // ログイン状態を更新
-
-      // steamIDの有無でルーティングを分岐
-      if (steamID) {
-        router.push('/user') // steamIDが登録済みの場合
+      // steam_id の有無でルーティングを分岐
+      if (authCookie.isSteamID) {
+        router.push('/') // steam_id が登録済みの場合
       } else {
-        router.push('/RegisterSteamid') // steamIDが未登録の場合
+        router.push('/RegisterSteamid') // steam_id が未登録の場合
       }
     }
   } catch (error) {
+    showMessage('ログインに失敗しました。', 'error') // エラーメッセージを表示
     if (error.response && error.response.status === 401) {
       errorMessage.value = 'メールアドレスまたはパスワードが間違っています。'
     } else {
@@ -123,5 +117,11 @@ button {
 
 button:hover {
   background-color: #0056b3;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: 10px;
 }
 </style>

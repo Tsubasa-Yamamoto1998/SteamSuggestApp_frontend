@@ -3,7 +3,8 @@
     <p>ようこそ {{ authCookie.name }} さん！</p>
   </div>
   <div class="game-list">
-    <h2>あなたのSteamライブラリ:</h2>
+    <h2>あなたのSteamライブラリ</h2>
+    <p>ゲーム画像が取得できないものはsteamのロゴを使用しています。</p>
     <p>現在のソート順: {{ sortOrder === 'asc' ? '昇順' : '降順' }}</p>
     <!-- ソート順切り替えボタン -->
     <button @click="toggleSortOrder" class="sort-button">
@@ -35,24 +36,17 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import axios from 'axios'
+import apiClient from '@/plugins/axios'
 import { useAuthCookie } from '@/stores/auth'
 import steamDefaultImg from '@/assets/steam_default_img.png'
-
 const authCookie = useAuthCookie()
 const games = ref([])
 const sortOrder = ref('asc') // 昇順・降順の状態を管理
 
 const fetchSteamLibrary = async () => {
   try {
-    const res = await axios.get('http://localhost:3000/custom/steam/library', {
-      headers: {
-        'access-token': localStorage.getItem('access-token'),
-        client: localStorage.getItem('client'),
-        uid: localStorage.getItem('uid'),
-        'Content-Type': 'application/json',
-      },
-    })
+    // Rails 側でクッキーを利用して認証情報を送信
+    const res = await apiClient.get('/custom/steam/library')
     games.value = res.data.response.games.map((game) => ({
       appid: game.appid,
       name: game.name,

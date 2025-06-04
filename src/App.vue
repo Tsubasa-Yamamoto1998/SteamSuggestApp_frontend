@@ -2,6 +2,7 @@
   <div id="app">
     <Header />
     <main>
+      <MessageDisplay />
       <router-view />
     </main>
     <Footer />
@@ -14,6 +15,7 @@ import 'normalize.css'
 
 import Header from '@/components/HeaderComp.vue'
 import Footer from '@/components/FooterComp.vue'
+import MessageDisplay from '@/components/MessageDisplay.vue'
 
 import { onMounted } from 'vue'
 import { useAuthCookie } from '@/stores/auth'

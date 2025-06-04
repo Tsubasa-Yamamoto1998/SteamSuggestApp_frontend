@@ -3,9 +3,11 @@
     <h1>Steam Game Suggest</h1>
     <nav class="nav">
       <RouterLink to="/">ホーム</RouterLink>
-      <RouterLink to="/signup">新規登録</RouterLink>
-      <RouterLink to="/login">ログイン</RouterLink>
-      <button @click="logout" class="logout-button">ログアウト</button>
+      <RouterLink v-if="!isLoggedIn" to="/signup">新規登録</RouterLink>
+      <RouterLink v-if="!isLoggedIn" to="/login">ログイン</RouterLink>
+      <button v-if="isLoggedIn" @click="logout" class="logout-button">ログアウト</button>
+      <RouterLink v-if="isLoggedIn" to="/games">ゲーム一覧</RouterLink>
+      <RouterLink v-if="isLoggedIn" to="/account">アカウント編集</RouterLink>
       <RouterLink to="/about">アバウト</RouterLink>
     </nav>
   </header>
@@ -15,9 +17,10 @@
 import { RouterLink } from 'vue-router'
 import { useAuthCookie } from '@/stores/auth'
 import { useRouter } from 'vue-router'
+import { computed } from 'vue'
 
 const authCookie = useAuthCookie()
-// const isLoggedIn = authCookie.isLoggedIn
+const isLoggedIn = computed(() => authCookie.isLoggedIn) // リアクティブに変更
 const router = useRouter()
 
 const logout = () => {
