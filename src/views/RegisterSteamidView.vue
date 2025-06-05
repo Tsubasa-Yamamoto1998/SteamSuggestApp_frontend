@@ -54,7 +54,7 @@ const registerSteamID = async () => {
     // 登録成功時の処理
     if (response.status === 200) {
       showMessage('SteamIDが登録されました！', 'success') // 成功メッセージを表示
-      router.push('/user') // ユーザービューにリダイレクト
+      router.push('/') 
     }
   } catch (error) {
     // エラーハンドリング
