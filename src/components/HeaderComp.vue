@@ -8,7 +8,6 @@
       <button v-if="isLoggedIn" @click="logout" class="logout-button">ログアウト</button>
       <RouterLink v-if="isLoggedIn" to="/games">ゲーム一覧</RouterLink>
       <RouterLink v-if="isLoggedIn" to="/account">アカウント編集</RouterLink>
-      <RouterLink to="/about">アバウト</RouterLink>
     </nav>
   </header>
 </template>

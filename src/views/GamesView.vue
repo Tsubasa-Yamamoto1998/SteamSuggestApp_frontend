@@ -11,7 +11,12 @@
       {{ sortOrder === 'asc' ? '降順に切り替え' : '昇順に切り替え' }}
     </button>
     <ul>
-      <li v-for="game in sortedGames" :key="game.appid" class="game-item">
+      <li
+        v-for="game in sortedGames"
+        :key="game.appid"
+        class="game-item"
+        @click="fetchYoutubeVideos(game.name)"
+      >
         <!-- カプセル画像が存在しない場合はimg_icon_urlを利用 -->
         <img
           :src="
@@ -36,12 +41,15 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router' // ルーターをインポート
 import apiClient from '@/plugins/axios'
 import { useAuthCookie } from '@/stores/auth'
+import { useYoutubeStore } from '@/stores/youtube'
 import steamDefaultImg from '@/assets/steam_default_img.png'
 const authCookie = useAuthCookie()
 const games = ref([])
 const sortOrder = ref('asc') // 昇順・降順の状態を管理
+const router = useRouter() // ルーターインスタンスを取得
 
 const fetchSteamLibrary = async () => {
   try {
@@ -80,6 +88,19 @@ const handleImageError = (game, type) => {
     game.imgErrorCapsule = true
   } else if (type === 'header') {
     game.imgErrorHeader = true
+  }
+}
+
+// YouTube APIから動画を取得する関数
+const fetchYoutubeVideos = async (gameTitle) => {
+  try {
+    const res = await apiClient.post('/custom/youtube/search', { game_title: gameTitle })
+    const videos = res.data
+    const youtubeStore = useYoutubeStore()
+    youtubeStore.setVideos(videos) // ストアに動画データを保存
+    router.push('/YoutubeVideos') // クエリパラメータなしで遷移
+  } catch (error) {
+    console.error('YouTube動画の取得に失敗しました:', error)
   }
 }
 

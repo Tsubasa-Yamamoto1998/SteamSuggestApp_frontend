@@ -3,21 +3,21 @@ import { useAuthCookie } from '@/stores/auth'
 import HomePage from '../views/HomeView.vue'
 import SignupPage from '../views/SignupView.vue'
 import LoginPage from '../views/LoginView.vue'
-import AboutPage from '../views/AboutView.vue'
 import Confirm from '../views/ConfirmView.vue'
 import GamesPage from '../views/GamesView.vue'
 import AccountPage from '../views/AccountView.vue'
 import RegisterSteamid from '../views/RegisterSteamidView.vue'
+import YoutubeVideos from '../views/YoutubeVideosView.vue'
 
 const routes = [
   { path: '/', component: HomePage },
   { path: '/signup', component: SignupPage },
   { path: '/login', component: LoginPage },
-  { path: '/about', component: AboutPage },
   { path: '/confirm', component: Confirm },
   { path: '/games', component: GamesPage, meta: { requiresAuth: true } },
   { path: '/account', component: AccountPage, meta: { requiresAuth: true } },
   { path: '/RegisterSteamid', component: RegisterSteamid },
+  { path: '/YoutubeVideos', component: YoutubeVideos },
 ]
 
 const router = createRouter({
