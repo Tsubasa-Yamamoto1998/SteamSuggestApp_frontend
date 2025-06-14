@@ -87,7 +87,7 @@ const submitForm = handleSubmit(async (values) => {
       email: values.email,
       password: values.password,
       password_confirmation: values.confirmPassword,
-      confirm_success_url: 'http://localhost:5173/confirm',
+      confirm_success_url: import.meta.env.VUE_APP_CONFIRM_SUCCESS_URL,
     }
     // APIリクエストを送信
     await apiClient.post('/auth', data)
