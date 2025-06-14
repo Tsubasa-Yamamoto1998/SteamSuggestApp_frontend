@@ -2,8 +2,8 @@
   <div id="app">
     <Header />
     <main>
-      <h1>認証が完了しました！下ボタンを押してログインしてください。</h1>
-      <router-view />
+      <h1 v-if="isSuccess">認証が完了しました！下ボタンを押してログインしてください。</h1>
+      <h1 v-else>認証に失敗しました。再度お試しください。</h1>
       <!-- ログイン画面への遷移ボタン -->
       <router-link to="/login">
         <button>ログイン画面へ</button>
@@ -13,7 +13,19 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+const isSuccess = ref(false)
+
+onMounted(() => {
+  // クエリパラメータから認証結果を取得
+  const successParam = route.query.account_confirmation_success
+  isSuccess.value = successParam !== 'false' // 成功かどうかを判定
+})
+</script>
 
 <style scoped>
 main {
