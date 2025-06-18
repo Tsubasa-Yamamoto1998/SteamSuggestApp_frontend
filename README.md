@@ -1,57 +1,73 @@
-# frontend
+# Steam Suggest App
 
-This template should help get you started developing with Vue 3 in Vite.
+Steamアカウントと連携して、ユーザーが所有しているゲームライブラリを可視化し、ジャンルごとの統計やおすすめを提示するWebアプリです。
 
-## Recommended IDE Setup
+---
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## 🚀 デプロイ済みアプリ
 
-## Customize configuration
+- **フロントエンド**: [https://sg-app.jp](https://sg-app.jp)  
+- **バックエンドAPI**: [https://api.sg-app.jp](https://api.sg-app.jp)
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+---
 
-## Project Setup
+## 🛠 使用技術
 
-```sh
-npm install
-```
+### フロントエンド
+- Vue.js 3
+- Vite
+- Pinia（状態管理）
+- Axios（API通信）
+- Tailwind CSS（スタイリング）
 
-### Compile and Hot-Reload for Development
+### バックエンド
+- Ruby on Rails 7
+- PostgreSQL
+- Devise + Devise Token Auth（トークン認証）
 
-```sh
-npm run dev
-```
+### インフラ・外部サービス
+- Heroku（バックエンドAPIホスティング）
+- Netlify（フロントエンドホスティング）
+- Brevo（SMTPメール送信）
+- Steam Web API（ゲームデータ取得）
+- お名前.com（独自ドメイン取得・DNS設定）
 
-### Compile and Minify for Production
+---
 
-```sh
-npm run build
-```
+## 📷 スクリーンショット
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+> ※任意の画像を `./images/` フォルダに配置し、下記パスを編集してください。
 
-```sh
-npm run test:unit
-```
+![ホーム画面](./images/home.png)
+![ゲームライブラリ](./images/library.png)
 
-### Run End-to-End Tests with [Cypress](https://www.cypress.io/)
+---
 
-```sh
-npm run test:e2e:dev
-```
+## 📄 主な機能
 
-This runs the end-to-end tests against the Vite development server.
-It is much faster than the production build.
+- ユーザー登録・ログイン（メール認証付き）
+- Steam ID 登録によるゲームライブラリ自動取得
+- ゲームタイトル・ジャンルの表示
+- ゲーム統計データの可視化
+- モバイル対応UI
 
-But it's still recommended to test the production build with `test:e2e` before deploying (e.g. in CI environments):
+---
 
-```sh
-npm run build
-npm run test:e2e
-```
+## 🔗 使用API
 
-### Lint with [ESLint](https://eslint.org/)
+- **Steam Web API**  
+  ユーザーが保有しているゲームのリストを取得
 
-```sh
-npm run lint
-```
+---
+
+## 🧑‍💻 開発者
+
+- tsubasa yamamoto  
+- GitHub: [https://github.com/your-github-id](https://github.com/your-github-id)
+
+---
+
+## 📬 お問い合わせ
+
+> このプロジェクトに関するご質問は GitHub Issues または開発者連絡先までお願いいたします。
+
