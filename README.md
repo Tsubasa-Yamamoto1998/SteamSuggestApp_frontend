@@ -1,6 +1,6 @@
 # Steam Suggest App
 
-Steamアカウントと連携して、ユーザーが所有しているゲームライブラリを可視化し、ジャンルごとの統計やおすすめを提示するWebアプリです。
+Steamアカウントと連携して、ユーザーが所有しているゲームライブラリを可視化し、プレイ時間統計やおすすめ動画を提示するWebアプリです。
 
 ---
 
@@ -14,11 +14,12 @@ Steamアカウントと連携して、ユーザーが所有しているゲーム
 ## 🛠 使用技術
 
 ### フロントエンド
-- Vue.js 3
-- Vite
-- Pinia（状態管理）
-- Axios（API通信）
-- Tailwind CSS（スタイリング）
+- Vue.js 3![Vue.js](https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vue.js&logoColor=4FC08D)
+- Vite![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+- Pinia（状態管理）![Pinia](https://img.shields.io/badge/Pinia-FADA5E?style=for-the-badge&logo=pinia&logoColor=black)
+- Axios（API通信）![Axios](https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white)
+- Tailwind CSS（スタイリング）![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
+
 
 ### バックエンド
 - Ruby on Rails 7
