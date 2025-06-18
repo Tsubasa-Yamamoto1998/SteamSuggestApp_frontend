@@ -31,8 +31,8 @@ Steamアカウントと連携して、ユーザーが所有しているゲーム
 - ![Heroku](https://img.shields.io/badge/Heroku-430098?style=for-the-badge&logo=heroku&logoColor=white)（バックエンドAPIホスティング）
 - ![Netlify](https://img.shields.io/badge/Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)（フロントエンドホスティング・DNS設定）
 - ![Brevo](https://img.shields.io/badge/Brevo-00A884?style=for-the-badge&logo=maildotru&logoColor=white)（SMTPメール送信）
-- ![Steam](https://img.shields.io/badge/Steam-000000?style=for-the-badge&logo=steam&logoColor=white)（ゲームデータ取得）
-- ![YouTube API](https://img.shields.io/badge/YouTube_API-FF0000?style=for-the-badge&logo=youtube&logoColor=white)（動画取得）
+- ![Steam](https://img.shields.io/badge/Steam-000000?style=for-the-badge&logo=steam&logoColor=white)（APIでゲームデータ取得）
+- ![YouTube](https://img.shields.io/badge/YouTube_API-FF0000?style=for-the-badge&logo=youtube&logoColor=white)（APIで動画データ取得）
 - ![お名前.com](https://img.shields.io/badge/お名前.com-DD0031?style=for-the-badge&logo=internet-explorer&logoColor=white)（独自ドメイン取得）
 
 ---
