@@ -1,7 +1,11 @@
 <template>
-  <div class="login">
+  <div class="login-form">
     <h2>ログイン</h2>
-    <p>登録済みのアカウントでログインしましょう。</p>
+    <p>
+      アカウントをお持ちでない方は<br />
+      <router-link to="/signup">新規登録</router-link>してください。
+    </p>
+
     <form @submit.prevent="handleLogin">
       <div class="form-group">
         <label for="email">メールアドレス</label>
@@ -77,51 +81,68 @@ const handleLogin = async () => {
 </script>
 
 <style scoped>
-.login {
+.login-form {
   max-width: 400px;
   margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #f9f9f9;
+  color: white;
 }
 
 .form-group {
-  margin-bottom: 15px;
-}
-
-label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
 }
 
 input {
-  width: 100%;
-  padding: 10px;
+  padding: 8px;
   font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
 }
 
 button {
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  background-color: #007bff;
+  padding: 10px 16px;
+  font-weight: bold;
+  background-color: #3b82f6;
   color: white;
   border: none;
   border-radius: 4px;
-  cursor: pointer;
 }
 
-button:hover {
-  background-color: #0056b3;
+a {
+  color: #66c0f4;
+  text-decoration: none;
 }
 
-.error-message {
-  color: red;
-  font-size: 14px;
-  margin-top: 10px;
+/* --- Responsive Design --- */
+@media (max-width: 960px) {
+  .login-form {
+    max-width: 90%;
+    padding: 15px;
+  }
+
+  input {
+    font-size: 13px;
+    padding: 7px;
+  }
+
+  button {
+    font-size: 14px;
+    padding: 8px 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-form {
+    padding: 10px;
+  }
+
+  input {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  button {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
 }
 </style>

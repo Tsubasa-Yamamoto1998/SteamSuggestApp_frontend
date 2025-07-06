@@ -4,26 +4,23 @@
       <section class="welcome-section">
         <h1 class="title">ようこそ！Steam Suggest Appへ</h1>
         <p class="description">
-          Steam Suggest
-          App（以下、sg_app）は、Steamユーザー向けにゲームライブラリの管理や、ゲームに関連する情報を提供するアプリケーションです。
+          Steam Suggest Appは、Steamユーザー向けにゲームライブラリの管理や、<br />
+          ゲームに関連する情報を提供するアプリケーションです。
         </p>
         <div class="features">
           <div class="feature-card">
-            <h2>🔑 Steam IDの登録</h2>
-            <p>
-              ユーザーは自身のSteam IDを登録することで、Steamライブラリ情報をアプリに連携できます。
-            </p>
+            <h2>🔑 Steamとの連携</h2>
+            <p>自身のSteam IDを登録することで、Steamライブラリ情報をアプリに連携できます。</p>
           </div>
           <div class="feature-card">
-            <h2>📚 Steamライブラリの取得</h2>
-            <p>
-              登録されたSteam IDを使用して、Steam
-              APIを通じてユーザーのゲームライブラリを取得します。
-            </p>
+            <h2>📚 ゲームのソート表示</h2>
+            <p>”ゲーム一覧”ページでゲームをプレイ時間の昇順・降順で表示します。</p>
           </div>
           <div class="feature-card">
             <h2>🎥 YouTube検索</h2>
-            <p>ゲームタイトルを基に、YouTubeから関連するゲームプレイ動画を検索できます。</p>
+            <p>
+              ”ゲーム一覧”ページでタイトルをクリックすると、YouTubeから関連するゲームプレイ動画を検索し表示します。
+            </p>
           </div>
           <div class="feature-card">
             <h2>🔒 ユーザー認証</h2>
@@ -35,11 +32,10 @@
           <ol>
             <li>アカウントを作成し、ログインしてください。</li>
             <li>ログイン後、Steam IDを登録します。</li>
-            <li>Steamライブラリ情報を取得します。</li>
-            <li>ゲームタイトルを入力してYouTube動画を検索します。</li>
+            <li>”ゲーム一覧”ページでゲームライブラリ情報を確認します。</li>
           </ol>
         </div>
-        <p class="cta">さあ、sg_appを使ってゲーム体験をさらに充実させましょう！</p>
+        <p class="cta">さあ、自分の積みゲーを確認してプレイしましょう！</p>
       </section>
     </main>
   </div>
@@ -56,27 +52,27 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f9f9f9;
+  background-color: #1b2838; /* ネイビー背景色 */
 }
 
 .welcome-section {
   text-align: center;
   max-width: 800px;
-  background: #fff;
+  background: #2a475e; /* ダークネイビー */
   padding: 30px;
   border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: #c7d5e0; /* テキストカラーを明るいブルーグレーに */
 }
 
 .title {
   font-size: 2.5rem;
-  color: #333;
+  color: #ffffff; /* 白色 */
   margin-bottom: 20px;
 }
 
 .description {
   font-size: 1.2rem;
-  color: #555;
+  color: #c7d5e0; /* 明るいブルーグレー */
   margin-bottom: 30px;
 }
 
@@ -88,23 +84,32 @@ main {
 }
 
 .feature-card {
-  background: #f0f0f0;
+  background: #1b2838; /* ネイビー */
   padding: 20px;
   border-radius: 8px;
-  width: 250px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 40%;
   text-align: left;
 }
 
-.feature-card h2 {
-  font-size: 1.5rem;
-  color: #333;
-  margin-bottom: 10px;
+/* --- Responsive Design --- */
+@media (max-width: 960px) {
+  .welcome-section {
+    padding: 20px;
+  }
+
+  .feature-card {
+    width: 100%;
+  }
 }
 
-.feature-card p {
-  font-size: 1rem;
-  color: #666;
+@media (max-width: 480px) {
+  .welcome-section {
+    padding: 15px;
+  }
+
+  .feature-card {
+    padding: 15px;
+  }
 }
 
 .usage {
@@ -114,13 +119,13 @@ main {
 
 .usage h2 {
   font-size: 1.8rem;
-  color: #333;
+  color: #ffffff; /* 白色 */
   margin-bottom: 20px;
 }
 
 .usage ol {
   font-size: 1rem;
-  color: #555;
+  color: #c7d5e0; /* 明るいブルーグレー */
   padding-left: 20px;
   list-style: decimal;
 }
@@ -128,7 +133,7 @@ main {
 .cta {
   margin-top: 30px;
   font-size: 1.2rem;
-  color: #007bff;
+  color: #ffffff;
   font-weight: bold;
 }
 </style>

@@ -1,14 +1,14 @@
 <template>
   <div class="youtube-videos">
     <h2>関連動画</h2>
-    <ul>
-      <li v-for="video in videos" :key="video.url" class="video-item">
+    <div class="video-grid">
+      <div v-for="video in videos" :key="video.url" class="video-card">
         <a :href="video.url" target="_blank">
           <img :src="video.thumbnail" alt="video thumbnail" class="video-thumbnail" />
           <p class="video-title">{{ video.title }}</p>
         </a>
-      </li>
-    </ul>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -31,22 +31,64 @@ onMounted(() => {
 </script>
 
 <style scoped>
+h2 {
+  font-size: 1.5rem;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
 .youtube-videos {
   margin: 20px;
 }
 
-.video-item {
-  margin: 10px 0;
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 20px;
 }
 
-.video-thumbnail {
-  width: 120px;
-  height: 90px;
-  margin-right: 10px;
+.video-card {
+  background-color: #1e1e1e;
+  border: solid rgb(0, 225, 255);
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
 }
 
 .video-title {
-  font-size: 1rem;
-  color: #2c3e50;
+  color: #ffffff; /* タイトルを白文字に設定 */
+  margin-top: 10px;
+  text-decoration: none; /* 下線デコレーションを消す */
+}
+
+.video-card a {
+  text-decoration: none; /* リンクのデフォルト下線を消す */
+  color: inherit; /* 親要素の文字色を継承 */
+}
+
+.video-card a:visited {
+  color: inherit; /* クリック後も文字色を継承 */
+}
+
+.video-thumbnail {
+  width: 100%; /* サムネイル画像をvideo-cardの幅に対応させる */
+  height: auto; /* アスペクト比を維持 */
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 960px) {
+  .video-grid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .video-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .video-card {
+    padding: 8px;
+  }
 }
 </style>

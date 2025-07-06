@@ -1,6 +1,6 @@
 <template>
   <header class="header">
-    <h1>Steam Game Suggest</h1>
+    <h1 class="title">Steam Game Suggest</h1>
     <nav class="nav">
       <RouterLink to="/">ホーム</RouterLink>
       <RouterLink v-if="!isLoggedIn" to="/signup">新規登録</RouterLink>
@@ -19,7 +19,7 @@ import { useRouter } from 'vue-router'
 import { computed } from 'vue'
 
 const authCookie = useAuthCookie()
-const isLoggedIn = computed(() => authCookie.isLoggedIn) // リアクティブに変更
+const isLoggedIn = computed(() => authCookie.isLoggedIn)
 const router = useRouter()
 
 const logout = () => {
@@ -30,30 +30,63 @@ const logout = () => {
 
 <style scoped>
 .header {
-  background-color: #2d2d2d;
-  color: white;
+  background-color: #1b2838; /* ネイビー背景色 */
+  color: #c7d5e0; /* 明るいブルーグレー */
   padding: 16px;
   text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
+
+.title {
+  font-size: 1.8rem;
+  color: #ffffff; /* 白色 */
+  margin-bottom: 8px;
+}
+
 .nav {
-  margin-top: 8px;
   display: flex;
   justify-content: center;
   gap: 20px;
 }
+
 .nav a {
-  color: white;
+  color: #66c0f4; /* 明るい青色 */
   text-decoration: none;
   font-weight: bold;
 }
+
 .nav a.router-link-active {
   text-decoration: underline;
 }
+
 .logout-button {
   background: none;
   border: none;
-  color: white;
+  color: #66c0f4; /* 明るい青色 */
   font-weight: bold;
   cursor: pointer;
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 960px) {
+  .nav {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .title {
+    font-size: 1.2rem;
+  }
 }
 </style>

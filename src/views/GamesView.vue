@@ -4,8 +4,12 @@
   </div>
   <div class="game-list">
     <h2>あなたのSteamライブラリ</h2>
-    <p>ゲーム画像が取得できないものはsteamのロゴを使用しています。</p>
-    <p>現在のソート順: {{ sortOrder === 'asc' ? '昇順' : '降順' }}</p>
+    <p class="notice">※ゲーム画像が取得できないものはsteamのロゴを使用しています。</p>
+    <p class="notice">※ゲーム情報の取得に数秒時間がかかることがあります。</p>
+    <p class="sort-order">
+      現在のソート順:
+      <span class="sort-highlight">{{ sortOrder === 'asc' ? '昇順' : '降順' }}</span>
+    </p>
     <!-- ソート順切り替えボタン -->
     <button @click="toggleSortOrder" class="sort-button">
       {{ sortOrder === 'asc' ? '降順に切り替え' : '昇順に切り替え' }}
@@ -113,7 +117,7 @@ onMounted(() => {
 .welcome-message {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #2c3e50;
+  color: #ffffff;
   margin: 20px;
 }
 
@@ -123,19 +127,46 @@ onMounted(() => {
 
 .game-list h2 {
   font-size: 1.2rem;
-  color: #34495e;
+  color: #ffffff;
+}
+
+.notice {
+  font-size: 0.9rem;
+  color: #ffcc00; /* 注意を引く黄色 */
+  margin-bottom: 5px;
+}
+
+.sort-order {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffffff; /* 白色で目立たせる */
+  margin-bottom: 10px;
+}
+
+.sort-highlight {
+  color: #fffb00; /* 目立つ緑色 */
+  font-weight: bold;
+  text-decoration: underline; /* 下線を追加 */
 }
 
 .sort-button {
   margin-bottom: 10px;
-  padding: 5px 10px;
+  padding: 10px 20px;
   font-size: 1rem;
+  font-weight: bold;
+  color: #ffffff; /* 白文字 */
+  background: #4caf50; /* 緑地 */
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
+  transition:
+    transform 0.3s ease,
+    background-color 0.3s ease; /* アニメーション */
 }
 
-.game-list ul {
-  list-style-type: none;
-  padding: 0;
+.sort-button:hover {
+  background-color: #388e3c; /* ホバー時の濃い緑 */
+  transform: scale(1.1); /* ホバー時に拡大 */
 }
 
 .game-item {
@@ -155,14 +186,36 @@ onMounted(() => {
   flex-direction: column;
 }
 
-.game-name {
-  font-size: 1rem;
-  font-weight: bold;
-  color: #2c3e50;
-}
+/* --- Responsive Design --- */
+@media (max-width: 480px) {
+  .game-item {
+    flex-direction: row; /* 横並びを維持 */
+    align-items: center; /* 中央揃え */
+  }
 
-.playtime {
-  font-size: 0.9rem;
-  color: #7f8c8d;
+  .game-image {
+    width: 120px; /* 画像サイズを調整 */
+    height: auto;
+    margin-right: 10px; /* 画像とテキストの間隔を調整 */
+  }
+
+  .game-info {
+    font-size: 0.9rem; /* テキストサイズを調整 */
+  }
+
+  .game-name {
+    font-size: 1rem; /* ゲーム名の文字サイズを調整 */
+    font-weight: bold;
+  }
+
+  .playtime {
+    font-size: 0.8rem; /* プレイ時間の文字サイズを調整 */
+    color: #888; /* 少し薄い色で表示 */
+  }
+
+  .sort-button {
+    font-size: 0.9rem;
+    padding: 8px 16px;
+  }
 }
 </style>

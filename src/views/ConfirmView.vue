@@ -31,6 +31,7 @@ onMounted(() => {
 main {
   min-height: 80vh;
   padding: 20px;
+  text-align: center;
 }
 
 button {
@@ -46,5 +47,28 @@ button {
 
 button:hover {
   background-color: #0056b3;
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 960px) {
+  main {
+    padding: 15px;
+  }
+
+  button {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  main {
+    padding: 10px;
+  }
+
+  button {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
 }
 </style>

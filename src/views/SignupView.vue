@@ -28,7 +28,7 @@
       </div>
 
       <p v-if="error" class="error">{{ error }}</p>
-      <button type="submit">登録する</button>
+      <button type="submit">新規登録</button>
     </form>
   </div>
 </template>
@@ -108,16 +108,20 @@ const submitForm = handleSubmit(async (values) => {
 .signup-form {
   max-width: 400px;
   margin: 0 auto;
+  color: white;
 }
+
 .form-group {
   margin-bottom: 16px;
   display: flex;
   flex-direction: column;
 }
+
 input {
   padding: 8px;
   font-size: 14px;
 }
+
 button {
   padding: 10px 16px;
   font-weight: bold;
@@ -126,14 +130,38 @@ button {
   border: none;
   border-radius: 4px;
 }
-.error {
-  color: red; /* エラーメッセージを赤色に設定 */
-  margin-top: 4px; /* メッセージと入力欄の間隔を調整 */
-  font-size: 12px; /* メッセージのフォントサイズを調整 */
+
+/* --- Responsive Design --- */
+@media (max-width: 960px) {
+  .signup-form {
+    max-width: 90%;
+    padding: 15px;
+  }
+
+  input {
+    font-size: 13px;
+    padding: 7px;
+  }
+
+  button {
+    font-size: 14px;
+    padding: 8px 14px;
+  }
 }
-.validation-error {
-  color: red; /* バリデーションエラーメッセージを赤色に設定 */
-  font-size: 12px; /* メッセージのフォントサイズを調整 */
-  margin-top: 4px; /* メッセージと入力欄の間隔を調整 */
+
+@media (max-width: 480px) {
+  .signup-form {
+    padding: 10px;
+  }
+
+  input {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  button {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
 }
 </style>

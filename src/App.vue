@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="app-container">
     <Header />
     <main>
       <MessageDisplay />
@@ -28,8 +28,29 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #1b2838; /* ネイビー背景色 */
+  color: #c7d5e0; /* 明るいブルーグレー */
+}
+
 main {
-  min-height: 80vh;
+  flex: 1;
   padding: 20px;
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 960px) {
+  main {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  main {
+    padding: 10px;
+  }
 }
 </style>

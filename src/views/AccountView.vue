@@ -1,8 +1,7 @@
 <template>
   <div class="account-edit">
     <h1>アカウント編集</h1>
-    <br />
-    <small>※変更しないフォームについては空欄のままにしてください。</small>
+    <p>※変更しないフォームについては空欄のままにしてください。</p>
     <form @submit.prevent="submitForm">
       <div class="form-group">
         <label for="username">ユーザー名</label>
@@ -135,16 +134,94 @@ export default {
 .account-edit {
   max-width: 400px;
   margin: 0 auto;
+  color: white;
 }
+
 .form-group {
-  margin-bottom: 1rem;
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
 }
+
+input {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+input:focus {
+  outline: none; /* フォーカス時のデフォルト枠を削除 */
+  border-color: #3b82f6; /* フォーカス時の境界線色を変更 */
+  box-shadow: 0 0 4px #3b82f6; /* フォーカス時の視覚効果を追加 */
+}
+
+button {
+  padding: 10px 16px;
+  font-weight: bold;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
 .error {
   color: red;
-  font-size: 0.875rem;
+  font-size: 14px;
+  margin-top: 10px;
 }
+
 .message {
   margin-top: 1rem;
   color: green;
+}
+
+/* router-link のデフォルトスタイルをリセット */
+a {
+  text-decoration: none; /* 下線を削除 */
+  color: #66c0f4;
+}
+
+a:visited {
+  color: #66c0f4;
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 960px) {
+  .account-edit {
+    max-width: 90%;
+    padding: 15px;
+  }
+
+  input {
+    font-size: 13px;
+    padding: 7px;
+  }
+
+  button {
+    font-size: 14px;
+    padding: 8px 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .account-edit {
+    padding: 10px;
+  }
+
+  input {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  button {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
 }
 </style>

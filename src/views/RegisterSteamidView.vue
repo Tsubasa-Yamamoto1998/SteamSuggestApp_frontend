@@ -54,7 +54,7 @@ const registerSteamID = async () => {
     // 登録成功時の処理
     if (response.status === 200) {
       showMessage('SteamIDが登録されました！', 'success') // 成功メッセージを表示
-      router.push('/') 
+      router.push('/')
     }
   } catch (error) {
     // エラーハンドリング
@@ -135,5 +135,33 @@ button:hover {
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 960px) {
+  .register-steamid {
+    max-width: 90%;
+    padding: 15px;
+  }
+
+  button {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .register-steamid {
+    padding: 10px;
+  }
+
+  input {
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  button {
+    font-size: 12px;
+    padding: 8px;
+  }
 }
 </style>
