@@ -50,7 +50,7 @@ Steamアカウントと連携して、ユーザーが所有しているゲーム
 
 ### youtube動画表示
 
-![youtube動画表示](src\assets\README_videos.png)
+![youtube動画表示](src/assets/README_videos.png)
 
 ---
 
