@@ -39,11 +39,18 @@ Steamアカウントと連携して、ユーザーが所有しているゲーム
 ---
 
 ## 📷 スクリーンショット
+
 ### ホーム画面
+
 ![ホーム画面](src/assets/README_home.png)
 
 ### ゲーム一覧
+
 ![ゲームライブラリ](src/assets/README_library.png)
+
+### youtube動画表示
+
+![youtube動画表示](src\assets\README_videos.png)
 
 ---
 
