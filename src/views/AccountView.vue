@@ -38,7 +38,7 @@
         <input type="text" id="steamID" v-model="steamID" placeholder="変更しない場合は空欄" />
         <span class="error" v-if="steamIDError">{{ steamIDError }}</span>
       </div>
-      <button type="submit">更新</button>
+      <button type="submit" id="button">更新</button>
     </form>
     <p v-if="error" class="error">{{ error }}</p>
     <p v-if="message" class="message">{{ message }}</p>
@@ -50,6 +50,7 @@ import { ref } from 'vue'
 import { useField, useForm } from 'vee-validate'
 import * as yup from 'yup'
 import apiClient from '@/plugins/axios'
+import { watch } from 'vue'
 
 // バリデーションスキーマを定義
 const schema = yup.object({
@@ -92,6 +93,13 @@ export default {
 
     const error = ref('')
     const message = ref('')
+
+    watch(
+      () => emailError.value,
+      (newVal) => {
+        console.log('emailError:', newVal)
+      },
+    )
 
     // フォーム送信処理
     const submitForm = handleSubmit(async (values) => {
