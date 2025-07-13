@@ -10,5 +10,10 @@ export default mergeConfig(
       exclude: [...configDefaults.exclude, 'e2e/**'],
       root: fileURLToPath(new URL('./', import.meta.url)),
     },
+    define: {
+      'import.meta.env.VITE_APP_CONFIRM_SUCCESS_URL': JSON.stringify(
+        'http://localhost:5173/confirm',
+      ),
+    },
   }),
 )

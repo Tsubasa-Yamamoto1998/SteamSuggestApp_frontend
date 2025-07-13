@@ -50,7 +50,6 @@ import { ref } from 'vue'
 import { useField, useForm } from 'vee-validate'
 import * as yup from 'yup'
 import apiClient from '@/plugins/axios'
-import { watch } from 'vue'
 
 // バリデーションスキーマを定義
 const schema = yup.object({
@@ -62,10 +61,7 @@ const schema = yup.object({
   password: yup
     .string()
     .nullable()
-    .min(
-      6,
-      'パスワードは6文字以上にしてください。英大文字、小文字、数字、特殊文字を含めてください。',
-    )
+    .min(6, 'パスワードは6文字以上にしてください。')
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
       'パスワードは英大文字、小文字、数字、特殊文字を含めてください。',
@@ -93,13 +89,6 @@ export default {
 
     const error = ref('')
     const message = ref('')
-
-    watch(
-      () => emailError.value,
-      (newVal) => {
-        console.log('emailError:', newVal)
-      },
-    )
 
     // フォーム送信処理
     const submitForm = handleSubmit(async (values) => {

@@ -27,7 +27,7 @@
         <span v-if="confirmPasswordError" class="validation-error">{{ confirmPasswordError }}</span>
       </div>
 
-      <p v-if="error" class="error">{{ error }}</p>
+      <p v-if="error?.value" class="error">{{ error?.value }}</p>
       <button type="submit">新規登録</button>
     </form>
   </div>
@@ -76,11 +76,12 @@ const { value: email, errorMessage: emailError } = useField('email')
 const { value: password, errorMessage: passwordError } = useField('password')
 const { value: confirmPassword, errorMessage: confirmPasswordError } = useField('confirmPassword')
 
-const error = ref('')
+const error = ref('default error message')
 const router = useRouter()
 
 // フォーム送信処理
 const submitForm = handleSubmit(async (values) => {
+  console.log('🟢 handleSubmit 内に入りました', values)
   try {
     const data = {
       username: values.username,
@@ -89,9 +90,14 @@ const submitForm = handleSubmit(async (values) => {
       password_confirmation: values.confirmPassword,
       confirm_success_url: import.meta.env.VITE_APP_CONFIRM_SUCCESS_URL,
     }
+    console.log('🟢 APIリクエストデータ:', data)
     // APIリクエストを送信
-    await apiClient.post('/auth', data)
 
+    await apiClient.post('/auth', data)
+    console.log('通ったよ')
+    if (import.meta.env.MODE === 'test') {
+      console.log('apiClient mock calls:', apiClient.post?.mock?.calls)
+    }
     // 成功メッセージを表示
     showMessage('メールアドレスに認証メールを送信しました！', 'success')
     router.push('/')
@@ -99,7 +105,6 @@ const submitForm = handleSubmit(async (values) => {
     // エラーメッセージを表示
     showMessage('登録に失敗しました。', 'error')
     error.value = err.response?.data?.errors?.full_messages?.[0] || '登録に失敗しました。'
-    console.error(err)
   }
 })
 </script>

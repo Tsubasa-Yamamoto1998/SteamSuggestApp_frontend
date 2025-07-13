@@ -1,10 +1,7 @@
 import { mount } from '@vue/test-utils'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import AccountView from '@/views/AccountView.vue'
-// import apiClient from '@/plugins/axios'
-import flushPromises from 'flush-promises'
-import { nextTick } from 'vue'
-// import { ssrModuleExportsKey } from 'vite/module-runner'
+import apiClient from '@/plugins/axios'
 
 vi.mock('@/plugins/axios', () => ({
   default: {
@@ -61,32 +58,53 @@ describe('AccountView.vue', () => {
     const emailInput = wrapper.find('input#email')
     const passwordInput = wrapper.find('input#password')
     const confirmPasswordInput = wrapper.find('input#confirmPassword')
-    // const button = wrapper.find('#button')
     const form = wrapper.find('form')
 
     await emailInput.setValue('invalid-email')
-    await passwordInput.setValue('short')
+    await passwordInput.setValue('Aa1@')
     await confirmPasswordInput.setValue('different')
 
-    console.log('Form before submit:', form.html())
     await form.trigger('submit') // フォーム送信
-    await flushPromises()
-    await nextTick()
-    await flushPromises() // ←追加！vee-validateの反映遅延に備える
-    await nextTick()
-    await wrapper.find('.error').exists()
+    await wrapper.vm.submitForm()
 
-    // バリデーションエラーの待機
-    await new Promise((resolve) => setTimeout(resolve, 0))
-    await flushPromises() //yupバリデーションの完了待ち
-    await nextTick() //DOM の更新待ち（Vueの再レンダリング）
-
-    // console.log('Error texts:', wrapper.html())
     const errorTexts = wrapper.findAll('.error').map((e) => e.text())
 
     expect(wrapper.find('.error').exists()).toBe(true)
     expect(errorTexts).toContain('正しいメールアドレスを入力してください。')
     expect(errorTexts).toContain('パスワードは6文字以上にしてください。')
     expect(errorTexts).toContain('パスワードが一致しません。')
+  })
+
+  it('shows an error message when API call fails', async () => {
+    // APIのモック設定：エラーを返す
+    apiClient.put.mockRejectedValueOnce({
+      response: {
+        data: {
+          errors: {
+            full_messages: ['更新に失敗しました。'],
+          },
+        },
+      },
+    })
+
+    const emailInput = wrapper.find('input#email')
+    const passwordInput = wrapper.find('input#password')
+    const confirmPasswordInput = wrapper.find('input#confirmPassword')
+    const form = wrapper.find('form')
+
+    // フォームに値を入力
+    await emailInput.setValue('test@example.com')
+    await passwordInput.setValue('password123A@')
+    await confirmPasswordInput.setValue('password123A@')
+
+    // フォーム送信
+    await form.trigger('submit.prevent')
+    await wrapper.vm.submitForm()
+
+    // エラーメッセージの確認
+    const errorMessage = wrapper.find('.error').text()
+
+    expect(wrapper.find('.error').exists()).toBe(true)
+    expect(errorMessage).toBe('更新に失敗しました。')
   })
 })
