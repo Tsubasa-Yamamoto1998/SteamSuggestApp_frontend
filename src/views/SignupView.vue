@@ -81,7 +81,6 @@ const router = useRouter()
 
 // フォーム送信処理
 const submitForm = handleSubmit(async (values) => {
-  console.log('🟢 handleSubmit 内に入りました', values)
   try {
     const data = {
       username: values.username,
@@ -90,7 +89,7 @@ const submitForm = handleSubmit(async (values) => {
       password_confirmation: values.confirmPassword,
       confirm_success_url: import.meta.env.VITE_APP_CONFIRM_SUCCESS_URL,
     }
-    console.log('🟢 APIリクエストデータ:', data)
+
     // APIリクエストを送信
 
     await apiClient.post('/auth', data)
