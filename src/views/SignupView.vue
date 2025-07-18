@@ -93,7 +93,6 @@ const submitForm = handleSubmit(async (values) => {
     // APIリクエストを送信
 
     await apiClient.post('/auth', data)
-    console.log('通ったよ')
     if (import.meta.env.MODE === 'test') {
       console.log('apiClient mock calls:', apiClient.post?.mock?.calls)
     }
