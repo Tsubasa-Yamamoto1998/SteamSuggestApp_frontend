@@ -8,16 +8,18 @@ import GamesPage from '../views/GamesView.vue'
 import AccountPage from '../views/AccountView.vue'
 import RegisterSteamid from '../views/RegisterSteamidView.vue'
 import YoutubeVideos from '../views/YoutubeVideosView.vue'
+import GuestLoginView from '@/views/GuestLoginView.vue'
 
 const routes = [
-  { path: '/', component: HomePage },
-  { path: '/signup', component: SignupPage },
-  { path: '/login', component: LoginPage },
+  { path: '/', component: HomePage, meta: { requiresGuestAuth: true } },
+  { path: '/signup', component: SignupPage, meta: { requiresGuestAuth: true } },
+  { path: '/login', component: LoginPage, meta: { requiresGuestAuth: true } },
   { path: '/confirm', component: Confirm },
   { path: '/games', component: GamesPage, meta: { requiresAuth: true } },
   { path: '/account', component: AccountPage, meta: { requiresAuth: true } },
   { path: '/RegisterSteamid', component: RegisterSteamid },
   { path: '/YoutubeVideos', component: YoutubeVideos },
+  { path: '/Guestlogin', component: GuestLoginView },
 ]
 
 const router = createRouter({
@@ -27,11 +29,20 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const authCookie = useAuthCookie()
+  const token = localStorage.getItem('authToken')
+
   if (to.meta.requiresAuth && !authCookie.isLoggedIn) {
-    next('/login') // ログインページにリダイレクト
-  } else {
-    next() // 通常の遷移
+    // ログインが必要だが未ログインの場合、ログインページにリダイレクト
+    return next('/login')
   }
+
+  if (to.meta.requiresGuestAuth && !token) {
+    // ゲスト認証が必要だがトークンがない場合、ゲストログインページにリダイレクト
+    return next('/Guestlogin')
+  }
+
+  // それ以外の場合は通常の遷移
+  next()
 })
 
 export default router
