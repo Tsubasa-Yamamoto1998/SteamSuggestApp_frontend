@@ -3,7 +3,7 @@
     <h1>アカウント情報</h1>
     <div class="user-info">
       <img
-        :src="user.profile_image_url || '/default-profile.png'"
+        :src="user.profile_image_url || require('@/assets/default_profile_image.png')"
         alt="プロフィール画像"
         class="profile-image"
       />
