@@ -39,12 +39,14 @@ import { useRouter } from 'vue-router'
 import { useAuthCookie } from '@/stores/auth'
 import { showMessage } from '@/utils/message' // showMessageをインポート
 import apiClient from '@/plugins/axios'
+import { useUserStore } from '@/stores/user'
 
 const email = ref('')
 const password = ref('')
 const errorMessage = ref('')
 const router = useRouter()
 const authCookie = useAuthCookie()
+const userStore = useUserStore()
 
 const handleLogin = async () => {
   try {
@@ -57,7 +59,7 @@ const handleLogin = async () => {
     // レスポンスが成功の場合
     if (response.status === 200) {
       showMessage('ログインに成功しました！', 'success') // 成功メッセージを表示
-
+      userStore.setUser(response.data.user)
       // 認証状態を更新
       await authCookie.checkAuth()
 

@@ -5,27 +5,48 @@
       <RouterLink to="/">ホーム</RouterLink>
       <RouterLink v-if="!isLoggedIn" to="/signup">新規登録</RouterLink>
       <RouterLink v-if="!isLoggedIn" to="/login">ログイン</RouterLink>
-      <button v-if="isLoggedIn" @click="logout" class="logout-button">ログアウト</button>
       <RouterLink v-if="isLoggedIn" to="/games">ゲーム一覧</RouterLink>
-      <RouterLink v-if="isLoggedIn" to="/account">アカウント編集</RouterLink>
+      <RouterLink v-if="isLoggedIn" to="/account">アカウント</RouterLink>
+      <button v-if="isLoggedIn" @click="logout" class="logout-button">ログアウト</button>
     </nav>
+    <div class="user-info-placeholder" v-if="!isLoggedIn"></div>
+    <div class="user-info" v-if="isLoggedIn">
+      <img
+        :src="user.profile_image_url || defaultProfileImage"
+        alt="プロフィール画像"
+        class="profile-image"
+      />
+      <span class="username">{{ user.username || 'ゲスト' }}</span>
+    </div>
   </header>
 </template>
 
 <script setup>
-import { RouterLink } from 'vue-router'
-import { useAuthCookie } from '@/stores/auth'
+import { computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { computed } from 'vue'
+import { useAuthCookie } from '@/stores/auth'
+import { storeToRefs } from 'pinia'
+import { useUserStore } from '@/stores/user'
 
+// デフォルト画像をインポート
+import defaultProfileImage from '@/assets/default_profile_image.png'
+
+const userStore = useUserStore()
+const { user } = storeToRefs(userStore)
 const authCookie = useAuthCookie()
 const isLoggedIn = computed(() => authCookie.isLoggedIn)
+
 const router = useRouter()
 
 const logout = () => {
   authCookie.logout()
   router.push('/login')
 }
+
+// マウント時にユーザー情報を取得
+onMounted(() => {
+  userStore.fetchUser()
+})
 </script>
 
 <style scoped>
@@ -33,20 +54,24 @@ const logout = () => {
   background-color: #1b2838; /* ネイビー背景色 */
   color: #c7d5e0; /* 明るいブルーグレー */
   padding: 16px;
-  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 .title {
   font-size: 1.8rem;
   color: #ffffff; /* 白色 */
-  margin-bottom: 8px;
+  margin: 0;
+  flex: 1; /* 左側に配置 */
 }
 
 .nav {
   display: flex;
   justify-content: center;
   gap: 20px;
+  flex: 2; /* 中央に配置 */
 }
 
 .nav a {
@@ -57,6 +82,30 @@ const logout = () => {
 
 .nav a.router-link-active {
   text-decoration: underline;
+}
+
+.user-info-placeholder {
+  flex: 1; /* user-info のスペースを埋める */
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1; /* 右側に配置 */
+  justify-content: flex-end;
+}
+
+.profile-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.username {
+  color: #c7d5e0; /* 明るいブルーグレー */
+  font-weight: bold;
 }
 
 .logout-button {
@@ -80,13 +129,27 @@ const logout = () => {
 }
 
 @media (max-width: 480px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
   .nav {
     flex-direction: column;
     gap: 5px;
+    align-items: center;
+  }
+
+  .user-info,
+  .user-info-placeholder {
+    justify-content: center;
+    margin-top: 10px;
   }
 
   .title {
     font-size: 1.2rem;
+    text-align: center;
+    width: 100%;
   }
 }
 </style>

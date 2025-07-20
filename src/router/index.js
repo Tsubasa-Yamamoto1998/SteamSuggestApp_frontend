@@ -6,6 +6,7 @@ import LoginPage from '../views/LoginView.vue'
 import Confirm from '../views/ConfirmView.vue'
 import GamesPage from '../views/GamesView.vue'
 import AccountPage from '../views/AccountView.vue'
+import EditPage from '../views/EditView.vue'
 import RegisterSteamid from '../views/RegisterSteamidView.vue'
 import YoutubeVideos from '../views/YoutubeVideosView.vue'
 import GuestLoginView from '@/views/GuestLoginView.vue'
@@ -17,9 +18,10 @@ const routes = [
   { path: '/confirm', component: Confirm },
   { path: '/games', component: GamesPage, meta: { requiresAuth: true } },
   { path: '/account', component: AccountPage, meta: { requiresAuth: true } },
+  { path: '/edit', component: EditPage, meta: { requiresAuth: true } },
   { path: '/RegisterSteamid', component: RegisterSteamid },
   { path: '/YoutubeVideos', component: YoutubeVideos },
-  { path: '/Guestlogin', component: GuestLoginView },
+  { path: '/GuestLogin', component: GuestLoginView },
 ]
 
 const router = createRouter({
@@ -27,21 +29,22 @@ const router = createRouter({
   routes,
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const authCookie = useAuthCookie()
-  const token = localStorage.getItem('authToken')
+
+  // 認証状態を確認
+  if (!authCookie.isLoggedIn && localStorage.getItem('authToken')) {
+    await authCookie.checkAuth()
+  }
 
   if (to.meta.requiresAuth && !authCookie.isLoggedIn) {
-    // ログインが必要だが未ログインの場合、ログインページにリダイレクト
     return next('/login')
   }
 
-  if (to.meta.requiresGuestAuth && !token) {
-    // ゲスト認証が必要だがトークンがない場合、ゲストログインページにリダイレクト
-    return next('/Guestlogin')
+  if (to.meta.requiresGuestAuth && !localStorage.getItem('authToken')) {
+    return next('/GuestLogin')
   }
 
-  // それ以外の場合は通常の遷移
   next()
 })
 

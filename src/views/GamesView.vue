@@ -2,7 +2,13 @@
   <div v-if="authCookie.name" class="welcome-message">
     <p>ようこそ {{ authCookie.name }} さん！</p>
   </div>
-  <div class="game-list">
+
+  <!-- steamID未設定時の警告メッセージ -->
+  <div v-if="!steamID" class="warning-message">
+    <p>警告: SteamIDが設定されていません。アカウントページでSteamIDを登録してください。</p>
+  </div>
+
+  <div class="game-list" v-else>
     <h2>あなたのSteamライブラリ</h2>
     <p class="notice">※ゲーム画像が取得できないものはsteamのロゴを使用しています。</p>
     <p class="notice">※ゲーム情報の取得に数秒時間がかかることがあります。</p>
@@ -45,28 +51,45 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router' // ルーターをインポート
+import { useRouter } from 'vue-router'
 import apiClient from '@/plugins/axios'
 import { useAuthCookie } from '@/stores/auth'
 import { useYoutubeStore } from '@/stores/youtube'
 import steamDefaultImg from '@/assets/steam_default_img.png'
+
 const authCookie = useAuthCookie()
 const games = ref([])
 const sortOrder = ref('asc') // 昇順・降順の状態を管理
 const router = useRouter() // ルーターインスタンスを取得
 
+// SteamIDの状態を管理
+const steamID = ref('')
+
+// SteamIDを取得する関数
+const fetchSteamID = async () => {
+  try {
+    const response = await apiClient.get('/custom/users/me')
+    steamID.value = response.data.user.steam_id || ''
+  } catch (error) {
+    console.error('SteamIDの取得に失敗しました:', error)
+  }
+}
+
 const fetchSteamLibrary = async () => {
   try {
-    // Rails 側でクッキーを利用して認証情報を送信
+    if (!steamID.value) {
+      console.warn('SteamIDが未設定のため、ゲームライブラリを取得できません。')
+      return
+    }
     const res = await apiClient.get('/custom/steam/library')
     games.value = res.data.response.games.map((game) => ({
       appid: game.appid,
       name: game.name,
-      playtime_forever: game.playtime_forever, // プレイ時間を追加
-      img_icon_url: game.img_icon_url, // img_icon_urlを追加
-      imgError: false, // 画像エラー状態を追加
-      imgErrorCapsule: false, // カプセル画像エラー状態を追加
-      imgErrorHeader: false, // ヘッダー画像エラー状態を追加
+      playtime_forever: game.playtime_forever,
+      img_icon_url: game.img_icon_url,
+      imgError: false,
+      imgErrorCapsule: false,
+      imgErrorHeader: false,
     }))
   } catch (error) {
     console.error('ゲーム一覧の取得に失敗しました:', error)
@@ -101,14 +124,15 @@ const fetchYoutubeVideos = async (gameTitle) => {
     const res = await apiClient.post('/custom/youtube/search', { game_title: gameTitle })
     const videos = res.data
     const youtubeStore = useYoutubeStore()
-    youtubeStore.setVideos(videos) // ストアに動画データを保存
-    router.push('/YoutubeVideos') // クエリパラメータなしで遷移
+    youtubeStore.setVideos(videos)
+    router.push('/YoutubeVideos')
   } catch (error) {
     console.error('YouTube動画の取得に失敗しました:', error)
   }
 }
 
-onMounted(() => {
+onMounted(async () => {
+  await fetchSteamID()
   fetchSteamLibrary()
 })
 </script>
@@ -169,24 +193,26 @@ onMounted(() => {
   transform: scale(1.1); /* ホバー時に拡大 */
 }
 
+ul {
+  display: grid; /* グリッドレイアウトを適用 */
+  grid-template-columns: repeat(1, 1fr); /* デフォルトは1列 */
+  gap: 15px; /* 各アイテム間の間隔 */
+  padding: 0; /* デフォルトのパディングをリセット */
+  list-style: none; /* デフォルトのリストスタイルを削除 */
+}
+
 .game-item {
   display: flex;
   align-items: center;
-  margin: 10px 0;
-}
-
-.game-image {
-  width: 184px;
-  height: 69px;
-  margin-right: 15px;
-}
-
-.game-info {
-  display: flex;
-  flex-direction: column;
 }
 
 /* --- Responsive Design --- */
+@media (min-width: 1000px) {
+  ul {
+    grid-template-columns: repeat(2, 1fr); /* 1200px以上で2列表示 */
+  }
+}
+
 @media (max-width: 480px) {
   .game-item {
     flex-direction: row; /* 横並びを維持 */
@@ -217,5 +243,20 @@ onMounted(() => {
     font-size: 0.9rem;
     padding: 8px 16px;
   }
+}
+
+.warning-message {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #ff0000; /* 赤色で警告を目立たせる */
+  margin: 20px;
+}
+
+.game-image {
+  width: 184px; /* 固定幅 */
+  height: 69px; /* 固定高さ */
+  object-fit: cover; /* 画像の比率を維持しつつトリミング */
+  border-radius: 5px; /* 角を少し丸める（任意） */
+  background-color: #f0f0f0; /* 画像が読み込まれない場合の背景色 */
 }
 </style>

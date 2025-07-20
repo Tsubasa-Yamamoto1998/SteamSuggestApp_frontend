@@ -58,7 +58,7 @@ export const useAuthCookie = defineStore('auth', () => {
     token,
     name,
     isLoggedIn,
-    isSteamID, // 新たに追加
+    isSteamID,
     checkAuth,
     logout,
   }

@@ -40,6 +40,7 @@ import * as yup from 'yup'
 import { useRouter } from 'vue-router'
 import apiClient from '@/plugins/axios' // apiClientをインポート
 import { showMessage } from '@/utils/message' // showMessageをインポート
+import { useUserStore } from '@/stores/user'
 
 // バリデーションスキーマを定義
 const schema = yup.object({
@@ -69,6 +70,7 @@ const schema = yup.object({
 const { handleSubmit } = useForm({
   validationSchema: schema,
 })
+const userStore = useUserStore()
 
 // 各フィールドのセットアップ
 const { value: username, errorMessage: usernameError } = useField('username')
@@ -87,15 +89,12 @@ const submitForm = handleSubmit(async (values) => {
       email: values.email,
       password: values.password,
       password_confirmation: values.confirmPassword,
-      confirm_success_url: import.meta.env.VITE_APP_CONFIRM_SUCCESS_URL,
     }
 
     // APIリクエストを送信
 
-    await apiClient.post('/auth', data)
-    if (import.meta.env.MODE === 'test') {
-      console.log('apiClient mock calls:', apiClient.post?.mock?.calls)
-    }
+    const response = await apiClient.post('/auth', data)
+    userStore.setUser(response.data.user)
     // 成功メッセージを表示
     showMessage('メールアドレスに認証メールを送信しました！', 'success')
     router.push('/')
