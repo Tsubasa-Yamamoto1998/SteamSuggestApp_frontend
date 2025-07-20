@@ -93,7 +93,12 @@ const submitForm = handleSubmit(async (values) => {
 
     // APIリクエストを送信
 
-    const response = await apiClient.post('/auth', data)
+    const response = await apiClient.post('/auth', data, {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
     userStore.setUser(response.data.user)
     // 成功メッセージを表示
     showMessage('メールアドレスに認証メールを送信しました！', 'success')
