@@ -3,7 +3,7 @@
     <h1>アカウント情報</h1>
     <div class="user-info">
       <img
-        :src="user.profile_image_url || require('@/assets/default_profile_image.png')"
+        :src="user.profile_image_url || defaultProfileImage"
         alt="プロフィール画像"
         class="profile-image"
       />
@@ -19,6 +19,7 @@
 import { ref, onMounted } from 'vue'
 import apiClient from '@/plugins/axios'
 import { useRouter } from 'vue-router'
+import defaultProfileImage from '@/assets/default_profile_image.png'
 
 const user = ref({
   username: '',
