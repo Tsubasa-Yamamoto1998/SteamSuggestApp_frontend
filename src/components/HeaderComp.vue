@@ -22,17 +22,19 @@
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthCookie } from '@/stores/auth'
-import { storeToRefs } from 'pinia'
-import { useUserStore } from '@/stores/user'
+import apiClient from '@/plugins/axios'
 
 // デフォルト画像をインポート
 import defaultProfileImage from '@/assets/default_profile_image.png'
 
-const userStore = useUserStore()
-const { user } = storeToRefs(userStore)
+const user = ref({
+  username: '',
+  profile_image_url: '',
+})
+const error = ref('')
 const authCookie = useAuthCookie()
 const isLoggedIn = computed(() => authCookie.isLoggedIn)
 
@@ -43,9 +45,33 @@ const logout = () => {
   router.push('/login')
 }
 
-// マウント時にユーザー情報を取得
+// ユーザー情報を取得
+const fetchUserInfo = async () => {
+  try {
+    const response = await apiClient.get('/custom/users/me')
+    user.value = response.data.user
+  } catch (err) {
+    error.value = 'ユーザー情報の取得に失敗しました。'
+    console.error(err)
+  }
+}
+
 onMounted(() => {
-  userStore.fetchUser()
+  if (isLoggedIn.value) {
+    fetchUserInfo()
+  }
+
+  // ユーザー情報更新イベントをリッスン
+  window.addEventListener('user-updated', (event) => {
+    user.value = event.detail // 更新されたユーザー情報を反映
+  })
+})
+
+onUnmounted(() => {
+  // イベントリスナーをクリーンアップ
+  window.removeEventListener('user-updated', (event) => {
+    user.value = event.detail
+  })
 })
 </script>
 
