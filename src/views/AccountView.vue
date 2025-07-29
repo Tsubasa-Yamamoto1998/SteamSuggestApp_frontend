@@ -4,7 +4,6 @@
     <div class="user-info">
       <img
         :src="user.profile_image_url || defaultProfileImage"
-        @error="onImageError"
         alt="プロフィール画像"
         class="profile-image"
       />
@@ -20,6 +19,7 @@
 import { ref, onMounted } from 'vue'
 import apiClient from '@/plugins/axios'
 import { useRouter } from 'vue-router'
+import defaultProfileImage from '@/assets/default_profile_image.png'
 
 const user = ref({
   username: '',
@@ -40,12 +40,6 @@ const fetchUserInfo = async () => {
     error.value = 'ユーザー情報の取得に失敗しました。'
     console.error(err)
   }
-}
-
-const defaultProfileImage = '@/assets/default_profile_image.png'
-
-const onImageError = (event) => {
-  event.target.src = defaultProfileImage
 }
 
 const goToEditPage = () => {
