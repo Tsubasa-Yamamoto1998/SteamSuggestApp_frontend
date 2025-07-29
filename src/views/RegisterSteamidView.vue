@@ -5,7 +5,8 @@
     <form @submit.prevent="registerSteamID">
       <div class="form-group">
         <label for="steamID">SteamID</label>
-        <input type="text" id="steamID" v-model="steamID" placeholder="SteamIDを入力" required />
+        <input type="text" id="steamID" v-model="steamID" placeholder="SteamIDを入力" />
+        <p v-if="steamIDError" class="error-message">{{ steamIDError }}</p>
       </div>
       <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
       <button type="submit">登録</button>
@@ -29,16 +30,33 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import apiClient from '@/plugins/axios'
 import { showMessage } from '@/utils/message'
+import { useForm, useField } from 'vee-validate'
+import * as yup from 'yup'
 
-const steamID = ref('')
+// バリデーションスキーマを定義
+const schema = yup.object({
+  steamID: yup
+    .string()
+    .matches(/^\d{17}$/, 'SteamIDは17桁の数字である必要があります。')
+    .required('SteamIDを入力してください。'),
+})
+
+// フォームのセットアップ
+const { handleSubmit } = useForm({
+  validationSchema: schema,
+})
+
+// フィールドのセットアップ
+const { value: steamID, errorMessage: steamIDError } = useField('steamID')
+
 const errorMessage = ref('')
 const router = useRouter()
 
-const registerSteamID = async () => {
+const registerSteamID = handleSubmit(async (values) => {
   try {
     const response = await apiClient.post(
       '/custom/steam/register',
-      { steamID: steamID.value },
+      { steamID: values.steamID },
       {
         headers: {
           'access-token': localStorage.getItem('access-token'),
@@ -63,7 +81,7 @@ const registerSteamID = async () => {
     }
     console.error(error)
   }
-}
+})
 </script>
 
 <style scoped>
@@ -175,6 +193,7 @@ button:hover {
   button {
     font-size: 12px;
     padding: 8px;
+    width: 100%; /* 横幅いっぱいに設定 */
   }
 }
 </style>

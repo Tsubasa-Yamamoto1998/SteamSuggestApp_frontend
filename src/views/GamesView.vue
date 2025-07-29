@@ -8,7 +8,12 @@
     <p>警告: SteamIDが設定されていません。アカウントページでSteamIDを登録してください。</p>
   </div>
 
-  <div class="game-list" v-else>
+  <!-- ゲーム情報取得エラー時のメッセージ -->
+  <div v-if="steamID && fetchError" class="error-message">
+    <p>エラー: ゲーム情報の取得に失敗しました。SteamIDが適切か確認してください。</p>
+  </div>
+
+  <div class="game-list" v-else-if="games.length > 0">
     <h2>あなたのSteamライブラリ</h2>
     <p class="notice">※ゲーム画像が取得できないものはsteamのロゴを使用しています。</p>
     <p class="notice">※ゲーム情報の取得に数秒時間がかかることがあります。</p>
@@ -64,6 +69,7 @@ const router = useRouter() // ルーターインスタンスを取得
 
 // SteamIDの状態を管理
 const steamID = ref('')
+const fetchError = ref(false) // ゲーム情報取得エラーの状態を管理
 
 // SteamIDを取得する関数
 const fetchSteamID = async () => {
@@ -91,8 +97,10 @@ const fetchSteamLibrary = async () => {
       imgErrorCapsule: false,
       imgErrorHeader: false,
     }))
+    fetchError.value = false // エラー状態をリセット
   } catch (error) {
     console.error('ゲーム一覧の取得に失敗しました:', error)
+    fetchError.value = true // エラー状態を設定
   }
 }
 
@@ -249,6 +257,13 @@ ul {
   font-size: 1.2rem;
   font-weight: bold;
   color: #ff0000; /* 赤色で警告を目立たせる */
+  margin: 20px;
+}
+
+.error-message {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #ff0000; /* 赤色でエラーを目立たせる */
   margin: 20px;
 }
 
