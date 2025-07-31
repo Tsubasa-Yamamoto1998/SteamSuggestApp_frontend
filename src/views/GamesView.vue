@@ -256,8 +256,11 @@ ul {
   align-items: center;
 }
 
+.game-info {
+  padding-left: 1rem;
+}
 /* --- Responsive Design --- */
-@media (min-width: 1000px) {
+@media (min-width: 960px) {
   ul {
     grid-template-columns: repeat(2, 1fr); /* 1200px以上で2列表示 */
   }
@@ -286,7 +289,6 @@ ul {
 
   .playtime {
     font-size: 0.8rem; /* プレイ時間の文字サイズを調整 */
-    color: #888; /* 少し薄い色で表示 */
   }
 
   .sort-button {
@@ -310,6 +312,7 @@ ul {
 }
 
 .game-image {
+  min-width: 184px; /* 最小幅 */
   width: 184px; /* 固定幅 */
   height: 69px; /* 固定高さ */
   object-fit: cover; /* 画像の比率を維持しつつトリミング */

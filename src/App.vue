@@ -71,7 +71,7 @@ main {
 @media (max-width: 480px) {
   main {
     padding: 10px;
-    padding-top: 132px; /* ヘッダーの高さ分だけ余白を追加 */
+    padding-top: 110px; /* ヘッダーの高さ分だけ余白を追加 */
   }
 }
 </style>
