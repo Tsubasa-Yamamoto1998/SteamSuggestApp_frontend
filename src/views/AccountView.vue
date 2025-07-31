@@ -80,6 +80,7 @@ button {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  width: 100%;
 }
 
 button:hover {

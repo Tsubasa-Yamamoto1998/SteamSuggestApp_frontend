@@ -203,6 +203,7 @@ button {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  width: 100%; /* ボタンを全幅に設定 */
 }
 
 button:hover {
