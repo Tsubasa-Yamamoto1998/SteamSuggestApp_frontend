@@ -39,18 +39,21 @@ onMounted(() => {
 main {
   flex: 1;
   padding: 20px;
+  padding-top: 100px; /* ヘッダーの高さ分だけ余白を追加 */
 }
 
 /* --- Responsive Design --- */
 @media (max-width: 960px) {
   main {
     padding: 15px;
+    padding-top: 72px; /* ヘッダーの高さ分だけ余白を追加 */
   }
 }
 
 @media (max-width: 480px) {
   main {
     padding: 10px;
+    padding-top: 132px; /* ヘッダーの高さ分だけ余白を追加 */
   }
 }
 </style>
