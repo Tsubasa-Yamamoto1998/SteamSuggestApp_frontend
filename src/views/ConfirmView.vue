@@ -37,7 +37,7 @@ main {
 button {
   margin-top: 20px;
   padding: 10px 20px;
-  font-size: 16px;
+  font-size: 1rem;
   background-color: #007bff;
   color: white;
   border: none;
@@ -56,7 +56,7 @@ button:hover {
   }
 
   button {
-    font-size: 14px;
+    font-size: 1rem;
     padding: 8px 16px;
   }
 }
@@ -67,7 +67,7 @@ button:hover {
   }
 
   button {
-    font-size: 12px;
+    font-size: 0.75rem;
     padding: 6px 12px;
   }
 }

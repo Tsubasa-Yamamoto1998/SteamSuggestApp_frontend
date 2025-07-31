@@ -88,7 +88,7 @@ button:hover {
 
 .error {
   color: red;
-  font-size: 14px;
+  font-size: 0.75rem;
   margin-top: 10px;
 }
 </style>

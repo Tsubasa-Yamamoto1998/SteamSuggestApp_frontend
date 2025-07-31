@@ -27,6 +27,24 @@ onMounted(() => {
 })
 </script>
 
+<style>
+:root {
+  font-size: 16px; /* デフォルト */
+}
+
+@media (max-width: 960px) {
+  :root {
+    font-size: 14px; /* タブレットサイズ */
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    font-size: 12px; /* モバイルサイズ */
+  }
+}
+</style>
+
 <style scoped>
 .app-container {
   display: flex;

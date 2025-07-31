@@ -126,7 +126,7 @@ const submitForm = handleSubmit(async (values) => {
 
 input {
   padding: 8px;
-  font-size: 14px;
+  font-size: 1rem;
 }
 
 button {
@@ -146,12 +146,12 @@ button {
   }
 
   input {
-    font-size: 13px;
+    font-size: 1rem;
     padding: 7px;
   }
 
   button {
-    font-size: 14px;
+    font-size: 1rem;
     padding: 8px 14px;
   }
 }
@@ -162,12 +162,12 @@ button {
   }
 
   input {
-    font-size: 12px;
+    font-size: 0.75rem;
     padding: 6px;
   }
 
   button {
-    font-size: 12px;
+    font-size: 0.75rem;
     padding: 6px 12px;
   }
 }

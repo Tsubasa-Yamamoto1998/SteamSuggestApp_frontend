@@ -88,7 +88,7 @@ const registerSteamID = handleSubmit(async (values) => {
 .register-steamid {
   max-width: 800px;
   margin: 20px auto;
-  padding: 30px;
+  padding: 1.875rem; /* 30px ÷ 16 = 1.875rem */
   background: #2a475e; /* ダークネイビー */
   border-radius: 10px;
   color: #c7d5e0; /* 明るいブルーグレー */
@@ -96,13 +96,13 @@ const registerSteamID = handleSubmit(async (values) => {
 }
 
 .title {
-  font-size: 2rem;
+  font-size: 2rem; /* 32px ÷ 16 = 2rem */
   color: #ffffff; /* 白色 */
   margin-bottom: 20px;
 }
 
 .description {
-  font-size: 1.2rem;
+  font-size: 1.2rem; /* 19.2px ÷ 16 = 1.2rem */
   margin-bottom: 30px;
 }
 
@@ -120,7 +120,7 @@ label {
 
 input {
   width: 100%;
-  padding: 10px;
+  padding: 0.625rem; /* 10px ÷ 16 = 0.625rem */
   font-size: 14px;
   box-sizing: border-box;
   border: 1px solid #ccc;
@@ -128,7 +128,7 @@ input {
 }
 
 button {
-  padding: 10px 20px;
+  padding: 0.625rem 1.25rem; /* 10px 20px ÷ 16 = 0.625rem 1.25rem */
   font-size: 16px;
   font-weight: bold;
   background-color: #4caf50; /* 緑色 */
@@ -164,7 +164,7 @@ button:hover {
 /* --- Responsive Design --- */
 @media (max-width: 960px) {
   .register-steamid {
-    padding: 20px;
+    padding: 1.25rem;
   }
 
   .title {
@@ -172,13 +172,13 @@ button:hover {
   }
 
   button {
-    font-size: 14px;
+    font-size: 1.8rem;
   }
 }
 
 @media (max-width: 480px) {
   .register-steamid {
-    padding: 15px;
+    padding: 1rem;
   }
 
   .title {
@@ -186,13 +186,13 @@ button:hover {
   }
 
   input {
-    font-size: 12px;
-    padding: 8px;
+    font-size: 0.75rem;
+    padding: 0.5rem;
   }
 
   button {
-    font-size: 12px;
-    padding: 8px;
+    font-size: 1.5rem;
+    padding: 0.5rem;
     width: 100%; /* 横幅いっぱいに設定 */
   }
 }

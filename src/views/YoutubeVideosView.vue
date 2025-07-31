@@ -38,7 +38,7 @@ h2 {
 }
 
 .youtube-videos {
-  margin: 20px;
+  margin: 1.25rem; /* 20px ÷ 16 = 1.25rem */
 }
 
 .video-grid {
@@ -52,16 +52,16 @@ h2 {
   background-color: #1e1e1e;
   border: solid rgb(0, 225, 255);
   border-radius: 8px;
-  padding: 10px;
+  padding: 0.625rem; /* 10px ÷ 16 = 0.625rem */
   text-align: center;
-  max-width: 400px; /* カードの最大幅を設定 */
+  max-width: 25rem; /* 400px ÷ 16 = 25rem */
   width: 100%; /* 幅を親要素に合わせる */
   box-sizing: border-box; /* パディングを含めた幅を計算 */
 }
 
 .video-title {
   color: #ffffff; /* タイトルを白文字に設定 */
-  margin-top: 10px;
+  margin-top: 0.625rem; /* 10px ÷ 16 = 0.625rem */
   text-decoration: none; /* 下線デコレーションを消す */
 }
 
@@ -82,7 +82,7 @@ h2 {
 /* --- Responsive Design --- */
 @media (max-width: 960px) {
   .video-grid {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(18.75rem, 1fr)); /* 300px ÷ 16 = 18.75rem */
   }
 }
 
@@ -92,7 +92,7 @@ h2 {
   }
 
   .video-card {
-    padding: 8px;
+    padding: 0.5rem; /* 8px ÷ 16 = 0.5rem */
   }
 }
 </style>

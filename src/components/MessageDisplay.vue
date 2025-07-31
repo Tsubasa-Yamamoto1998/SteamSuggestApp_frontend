@@ -16,7 +16,7 @@ import { message, type } from '@/utils/message'
   transform: translateX(-50%);
   padding: 10px 20px;
   border-radius: 5px;
-  font-size: 16px;
+  font-size: 1rem;
   z-index: 1000;
   color: white;
   text-align: center;
@@ -33,14 +33,14 @@ import { message, type } from '@/utils/message'
 /* --- Responsive Design --- */
 @media (max-width: 960px) {
   .message-display {
-    font-size: 14px;
+    font-size: 1rem;
     padding: 8px 16px;
   }
 }
 
 @media (max-width: 480px) {
   .message-display {
-    font-size: 12px;
+    font-size: 0.75rem;
     padding: 6px 12px;
   }
 }

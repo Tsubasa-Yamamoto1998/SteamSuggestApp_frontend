@@ -184,7 +184,7 @@ onMounted(() => {
 
 input {
   padding: 8px;
-  font-size: 14px;
+  font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
@@ -211,7 +211,7 @@ button:hover {
 
 .error {
   color: red;
-  font-size: 14px;
+  font-size: 1rem;
   margin-top: 10px;
 }
 
@@ -231,7 +231,7 @@ a:visited {
 }
 
 .help-link {
-  font-size: 14px;
+  font-size: 1rem;
   color: #66c0f4;
   margin-top: 8px;
   display: inline-block;
@@ -243,7 +243,7 @@ a:visited {
 
 /* 既存のスタイルに追加 */
 .current-info {
-  font-size: 14px;
+  font-size: 1rem;
   color: #ccc;
   margin-bottom: 8px;
 }
@@ -263,12 +263,12 @@ a:visited {
   }
 
   input {
-    font-size: 13px;
+    font-size: 0.75rem;
     padding: 7px;
   }
 
   button {
-    font-size: 14px;
+    font-size: 1rem;
     padding: 8px 14px;
   }
 }
@@ -279,12 +279,12 @@ a:visited {
   }
 
   input {
-    font-size: 12px;
+    font-size: 0.75rem;
     padding: 6px;
   }
 
   button {
-    font-size: 12px;
+    font-size: 0.75rem;
     padding: 6px 12px;
   }
 }
