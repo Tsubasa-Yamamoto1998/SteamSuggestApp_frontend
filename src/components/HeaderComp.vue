@@ -22,7 +22,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthCookie } from '@/stores/auth'
 import apiClient from '@/plugins/axios'
@@ -49,7 +49,9 @@ const logout = () => {
 const fetchUserInfo = async () => {
   try {
     const response = await apiClient.get('/custom/users/me')
+    console.log('User info fetched:', response.data.user)
     user.value = response.data.user
+    console.log('Current user:', user.value)
   } catch (err) {
     error.value = 'ユーザー情報の取得に失敗しました。'
     console.error(err)
@@ -57,8 +59,11 @@ const fetchUserInfo = async () => {
 }
 
 onMounted(() => {
+  console.log('Mounted HeaderComp')
+  console.log('Is user logged in?', isLoggedIn.value)
   if (isLoggedIn.value) {
     fetchUserInfo()
+    console.log('Fetching user info on mount')
   }
 
   // ユーザー情報更新イベントをリッスン
@@ -72,6 +77,13 @@ onUnmounted(() => {
   window.removeEventListener('user-updated', (event) => {
     user.value = event.detail
   })
+})
+
+watch(isLoggedIn, (newValue) => {
+  if (newValue) {
+    fetchUserInfo()
+    console.log('Fetching user info after isLoggedIn changed')
+  }
 })
 </script>
 

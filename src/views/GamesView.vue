@@ -27,7 +27,7 @@
     </button>
     <ul>
       <li
-        v-for="game in sortedGames"
+        v-for="game in paginatedGames"
         :key="game.appid"
         class="game-item"
         @click="fetchYoutubeVideos(game.name)"
@@ -51,6 +51,25 @@
         </div>
       </li>
     </ul>
+
+    <!-- ページネーション -->
+    <div class="pagination" v-if="totalPages > 1">
+      <button
+        @click="changePage(currentPage - 1)"
+        :disabled="currentPage === 1"
+        class="pagination-button"
+      >
+        前のページ
+      </button>
+      <span class="current-page">{{ currentPage }} / {{ totalPages }}</span>
+      <button
+        @click="changePage(currentPage + 1)"
+        :disabled="currentPage === totalPages"
+        class="pagination-button"
+      >
+        次のページ
+      </button>
+    </div>
   </div>
 </template>
 
@@ -67,9 +86,13 @@ const games = ref([])
 const sortOrder = ref('asc') // 昇順・降順の状態を管理
 const router = useRouter() // ルーターインスタンスを取得
 
+// ページネーション用の状態
+const currentPage = ref(1) // 現在のページ
+const itemsPerPage = 20 // 1ページあたりのゲーム数
+
 // SteamIDの状態を管理
 const steamID = ref('')
-const fetchError = ref(false) // ゲーム情報取得エラーの状態を管理
+const fetchError = ref(false)
 
 // SteamIDを取得する関数
 const fetchSteamID = async () => {
@@ -97,16 +120,17 @@ const fetchSteamLibrary = async () => {
       imgErrorCapsule: false,
       imgErrorHeader: false,
     }))
-    fetchError.value = false // エラー状態をリセット
+    fetchError.value = false
   } catch (error) {
     console.error('ゲーム一覧の取得に失敗しました:', error)
-    fetchError.value = true // エラー状態を設定
+    fetchError.value = true
   }
 }
 
 // ソート順を切り替える関数
 const toggleSortOrder = () => {
   sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc'
+  currentPage.value = 1 // ソート順を切り替えたらページを1に戻す
 }
 
 // ソートされたゲーム一覧を計算
@@ -118,6 +142,25 @@ const sortedGames = computed(() => {
   })
 })
 
+// 現在のページに表示するゲームを計算
+const paginatedGames = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage
+  const end = start + itemsPerPage
+  return sortedGames.value.slice(start, end)
+})
+
+// 総ページ数を計算
+const totalPages = computed(() => {
+  return Math.ceil(sortedGames.value.length / itemsPerPage)
+})
+
+// ページを変更する関数
+const changePage = (page) => {
+  if (page >= 1 && page <= totalPages.value) {
+    currentPage.value = page
+  }
+}
+
 const handleImageError = (game, type) => {
   if (type === 'capsule') {
     game.imgErrorCapsule = true
@@ -126,7 +169,6 @@ const handleImageError = (game, type) => {
   }
 }
 
-// YouTube APIから動画を取得する関数
 const fetchYoutubeVideos = async (gameTitle) => {
   try {
     const res = await apiClient.post('/custom/youtube/search', { game_title: gameTitle })
@@ -273,5 +315,38 @@ ul {
   object-fit: cover; /* 画像の比率を維持しつつトリミング */
   border-radius: 5px; /* 角を少し丸める（任意） */
   background-color: #f0f0f0; /* 画像が読み込まれない場合の背景色 */
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.pagination-button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #ffffff;
+  background: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.pagination-button:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+}
+
+.current-page {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333333;
+  margin: 0 10px;
 }
 </style>

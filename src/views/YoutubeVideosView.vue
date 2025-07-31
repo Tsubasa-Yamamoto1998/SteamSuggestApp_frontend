@@ -43,8 +43,9 @@ h2 {
 
 .video-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
+  justify-content: center; /* カードを中央揃え */
 }
 
 .video-card {
@@ -53,6 +54,9 @@ h2 {
   border-radius: 8px;
   padding: 10px;
   text-align: center;
+  max-width: 400px; /* カードの最大幅を設定 */
+  width: 100%; /* 幅を親要素に合わせる */
+  box-sizing: border-box; /* パディングを含めた幅を計算 */
 }
 
 .video-title {
