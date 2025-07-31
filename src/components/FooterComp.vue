@@ -1,6 +1,6 @@
 <template>
   <footer class="footer">
-    <p>&copy; 2025 My Steam App</p>
+    <p>&copy; 2025 Steam Game Suggest</p>
   </footer>
 </template>
 
