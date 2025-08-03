@@ -94,7 +94,10 @@ const schema = yup.object({
     .string()
     .nullable()
     .oneOf([yup.ref('password')], 'パスワードが一致しません。'),
-  steamID: yup.string().nullable(),
+  steamID: yup
+    .string()
+    .nullable()
+    .matches(/^\d{17}$/, 'SteamIDは17桁の数字である必要があります。'),
 })
 
 const { handleSubmit } = useForm({
