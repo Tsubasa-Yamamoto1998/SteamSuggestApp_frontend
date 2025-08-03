@@ -55,10 +55,13 @@
           />
           <span v-else>未設定</span>
         </p>
-        <input type="file" id="profileImage" @change="handleFileChange" />
+        <input type="file" id="profileImage" @change="onImageSelect" />
+        <!-- クロップ画面 -->
+        <ImageCropper v-if="imageSrc" :src="imageSrc" @cropped="handleCropped" />
+
         <span class="error" v-if="imageError">{{ imageError }}</span>
       </div>
-      <button type="submit" id="button">更新</button>
+      <button type="submit" id="button" :disabled="imageSrc">更新</button>
     </form>
     <p v-if="error" class="error">{{ error }}</p>
     <p v-if="message" class="message">{{ message }}</p>
@@ -70,6 +73,7 @@ import { ref, onMounted } from 'vue'
 import { useField, useForm } from 'vee-validate'
 import * as yup from 'yup'
 import apiClient from '@/plugins/axios'
+import ImageCropper from '@/components/ImageCropper.vue'
 
 // バリデーションスキーマを定義
 const schema = yup.object({
@@ -110,10 +114,12 @@ const { value: password, errorMessage: passwordError } = useField('password')
 const { value: confirmPassword, errorMessage: confirmPasswordError } = useField('confirmPassword')
 const { value: steamID, errorMessage: steamIDError } = useField('steamID')
 
-const profileImage = ref(null)
-const imageError = ref('')
 const error = ref('')
 const message = ref('')
+const imageSrc = ref(null)
+const croppedImageUrl = ref('')
+const profileImage = ref(null) // ← FormDataに入れる画像
+const imageError = ref('')
 
 // ユーザー情報を取得
 const fetchUserInfo = async () => {
@@ -126,15 +132,20 @@ const fetchUserInfo = async () => {
   }
 }
 
-const handleFileChange = (event) => {
+const onImageSelect = (event) => {
   const file = event.target.files[0]
   if (file && file.size <= 2 * 1024 * 1024) {
-    // 2MB制限
-    profileImage.value = file
+    imageSrc.value = URL.createObjectURL(file)
     imageError.value = ''
   } else {
     imageError.value = '画像サイズは2MB以下にしてください。'
   }
+}
+
+const handleCropped = (blob) => {
+  profileImage.value = blob
+  croppedImageUrl.value = URL.createObjectURL(blob)
+  imageSrc.value = null // 切り抜き後に imageSrc を null に設定
 }
 
 // フォーム送信処理
@@ -147,8 +158,9 @@ const submitForm = handleSubmit(async (values) => {
     if (values.confirmPassword)
       formData.append('user[password_confirmation]', values.confirmPassword)
     if (values.steamID) formData.append('user[steam_id]', values.steamID)
-    if (profileImage.value) formData.append('user[profile_image]', profileImage.value)
-
+    if (profileImage.value) {
+      formData.append('user[profile_image]', profileImage.value, 'cropped.jpg')
+    }
     await apiClient.put('/custom/users', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     })
@@ -204,6 +216,17 @@ button {
   border-radius: 4px;
   cursor: pointer;
   width: 100%; /* ボタンを全幅に設定 */
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+button:disabled:hover {
+  background-color: #ccc; /* 無効化された状態の背景色を維持 */
+  cursor: not-allowed; /* カーソルを変更 */
+  box-shadow: none; /* ホバー時の視覚効果を削除 */
 }
 
 button:hover {
