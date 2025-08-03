@@ -19,7 +19,9 @@
 import { ref, onMounted } from 'vue'
 import apiClient from '@/plugins/axios'
 import { useRouter } from 'vue-router'
-import defaultProfileImage from '@/assets/default_profile_image.png'
+
+const defaultProfileImage =
+  'https://steam-suggest-app-profileimages.s3.ap-northeast-1.amazonaws.com/default_profile_image.png'
 
 const user = ref({
   username: '',
